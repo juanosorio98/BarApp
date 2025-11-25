@@ -1,3 +1,4 @@
+if (typeof requireRole === "function") requireRole(["admin","mesero"]);
 // js/carta.js
 // Carta para mesero: agregar productos a una mesa específica
 

@@ -1,3 +1,4 @@
+if (typeof requireRole === "function") requireRole(["admin"]);
 
 const ventas = JSON.parse(localStorage.getItem("ventas")) || [];
 

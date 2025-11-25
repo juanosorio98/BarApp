@@ -1,3 +1,4 @@
+if (typeof requireRole === "function") requireRole(["admin","mesero"]);
 
 const totalMesas = 8;
 let mesaActual = null;

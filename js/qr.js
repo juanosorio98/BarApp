@@ -1,3 +1,4 @@
+if (typeof requireRole === "function") requireRole(["admin"]);
 
 const qrContainer = document.getElementById("qr-container");
 const totalMesasQR = 8;

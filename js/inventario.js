@@ -1,3 +1,4 @@
+if (typeof requireRole === "function") requireRole(["admin"]);
 
 let inventario = JSON.parse(localStorage.getItem("inventario")) || {};
 const productos = window.menuData;

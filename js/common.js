@@ -59,3 +59,16 @@ function initThemeToggle() {
 }
 
 document.addEventListener("DOMContentLoaded", initThemeToggle);
+
+function requireRole(roles) {
+  try {
+    var rol = localStorage.getItem("rol");
+    if (!rol || roles.indexOf(rol) === -1) {
+      alert("Acceso restringido. Inicia sesión con un usuario autorizado.");
+      window.location.href = "index.html";
+    }
+  } catch (e) {
+    console.error("Error verificando rol:", e);
+    window.location.href = "index.html";
+  }
+}
