@@ -1,6 +1,6 @@
 
 const users = [
-  { user: "admin",   pass: "admin",  rol: "admin"  },
+  { user: "admin",  pass: "admin",  rol: "admin"  },
   { user: "mesero", pass: "mesero", rol: "mesero" }
 ];
 
@@ -30,30 +30,36 @@ function mostrarVista() {
   const userInfo = document.getElementById("user-info");
 
   if (rol) {
-    publicHome.style.display = "none";
-    appHome.style.display = "block";
+    if (publicHome) publicHome.style.display = "none";
+    if (appHome) appHome.style.display = "block";
     const map = { admin: "Administrador", mesero: "Mesero" };
     if (userInfo) {
-      userInfo.textContent = `Sesión: ${localStorage.getItem("usuario")} (${map[rol] || rol})`;
+      userInfo.textContent =
+        "Sesión: " + (localStorage.getItem("usuario") || "") +
+        " (" + (map[rol] || rol) + ")";
     }
     const adminBtn = document.getElementById("admin-btn");
     const reportesBtn = document.getElementById("reportes-btn");
     const qrBtn = document.getElementById("qr-btn");
     const mesasBtn = document.getElementById("mesas-btn");
+    const productosAdminBtn = document.getElementById("productos-admin-btn");
+
     if (rol === "admin") {
-      adminBtn.style.display = "block";
-      reportesBtn.style.display = "block";
-      qrBtn.style.display = "block";
-      mesasBtn.style.display = "block";
+      if (adminBtn) adminBtn.style.display = "block";
+      if (reportesBtn) reportesBtn.style.display = "block";
+      if (qrBtn) qrBtn.style.display = "block";
+      if (mesasBtn) mesasBtn.style.display = "block";
+      if (productosAdminBtn) productosAdminBtn.style.display = "block";
     } else if (rol === "mesero") {
-      adminBtn.style.display = "none";
-      reportesBtn.style.display = "none";
-      qrBtn.style.display = "none";
-      mesasBtn.style.display = "block";
+      if (adminBtn) adminBtn.style.display = "none";
+      if (reportesBtn) reportesBtn.style.display = "none";
+      if (qrBtn) qrBtn.style.display = "none";
+      if (mesasBtn) mesasBtn.style.display = "block";
+      if (productosAdminBtn) productosAdminBtn.style.display = "none";
     }
   } else {
-    publicHome.style.display = "block";
-    appHome.style.display = "none";
+    if (publicHome) publicHome.style.display = "block";
+    if (appHome) appHome.style.display = "none";
     if (userInfo) userInfo.textContent = "";
   }
 }
@@ -61,14 +67,16 @@ function mostrarVista() {
 window.addEventListener("load", () => {
   const qrImg = document.getElementById("qr-img");
   if (qrImg) {
-        const path = window.location.pathname;
+    const path = window.location.pathname || "/";
     const base = path.substring(0, path.lastIndexOf("/") + 1);
     const url = window.location.origin + base + "productos.html";
-    qrImg.src = "https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=" + encodeURIComponent(url);
+    qrImg.src =
+      "https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=" +
+      encodeURIComponent(url);
   }
   const inicio = parseInt(localStorage.getItem("sesionInicio") || "0", 10);
   const maxMs = 30 * 60 * 1000;
-  if (inicio && (Date.now() - inicio) > maxMs) {
+  if (inicio && Date.now() - inicio > maxMs) {
     localStorage.clear();
   }
   mostrarVista();

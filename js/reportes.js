@@ -1,7 +1,5 @@
 if (typeof requireRole === "function") requireRole(["admin"]);
 
-const ventas = JSON.parse(localStorage.getItem("ventas")) || [];
-
 function renderTabla(containerId, headers, rows) {
   const cont = document.getElementById(containerId);
   if (!cont) return;
@@ -21,7 +19,12 @@ function renderTabla(containerId, headers, rows) {
   cont.innerHTML = html;
 }
 
+function obtenerVentas() {
+  return JSON.parse(localStorage.getItem("ventas") || "[]");
+}
+
 function reporteMesas() {
+  const ventas = obtenerVentas();
   const tot = {};
   ventas.forEach(v => { tot[v.mesa] = (tot[v.mesa] || 0) + v.total; });
   const rows = Object.keys(tot).map(m => [m, "$" + tot[m]]);
@@ -29,6 +32,7 @@ function reporteMesas() {
 }
 
 function reporteProductos() {
+  const ventas = obtenerVentas();
   const cant = {};
   const ingreso = {};
   ventas.forEach(v => {
@@ -44,6 +48,7 @@ function reporteProductos() {
 }
 
 function reporteUsuarios() {
+  const ventas = obtenerVentas();
   const tot = {};
   ventas.forEach(v => {
     const u = v.usuario || "desconocido";
@@ -56,3 +61,12 @@ function reporteUsuarios() {
 reporteMesas();
 reporteProductos();
 reporteUsuarios();
+
+// Actualizar reportes automáticamente si cambian las ventas en otra pestaña
+window.addEventListener("storage", function (e) {
+  if (e.key !== "ventas") return;
+  console.log("[BarApp] Ventas actualizadas → refrescando reportes");
+  reporteMesas();
+  reporteProductos();
+  reporteUsuarios();
+});
